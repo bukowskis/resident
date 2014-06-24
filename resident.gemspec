@@ -4,7 +4,7 @@ $:.unshift lib unless $:.include?(lib)
 require 'national_identification_number'
 
 Gem::Specification.new do |s|
-  s.required_ruby_version = ">= 1.8.7"
+  s.required_ruby_version = ">= 1.9.3"
   s.require_paths << 'lib'
 
   s.name        = 'resident'
