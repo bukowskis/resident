@@ -11,15 +11,15 @@ module NationalIdentificationNumber
 
     def repair
       super
-      if @number.match(/(\d{6})(\-{0,1})(\d{3})([#{CHECKSUMS}]{1})/)
+      if @number.match(/(\d{6})(\-{0,1})(\d{3})([#{CHECKSUMS.join('')}]{1})/)
         @number = "#{$1}-#{$3}#{$4}"
       else
-        @number.gsub!(/[^#{CHECKSUMS}\-\+]/, '')
+        @number.gsub!(/[^#{CHECKSUMS.join('')}\-\+]/, '')
       end
     end
 
     def validate
-      if @number.match(/(\d{2})(\d{2})(\d{2})([\-\+A]{0,1})(\d{3})([#{CHECKSUMS}]{1})/)
+      if @number.match(/(\d{2})(\d{2})(\d{2})([\-\+A]{0,1})(\d{3})([#{CHECKSUMS.join('')}]{1})/)
         checksum = self.class.calculate_checksum("#{$1}#{$2}#{$3}#{$5}")
         if checksum == $6
 
@@ -34,7 +34,6 @@ module NationalIdentificationNumber
           when 'A' then 2000
           else          1900
           end
-
 
           begin
             @date = Date.parse("#{century+year}-#{month}-#{day}")
