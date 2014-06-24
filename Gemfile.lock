@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    resident (0.0.9)
+    resident (0.0.10)
 
 GEM
   remote: https://rubygems.org/
