@@ -54,7 +54,14 @@ module NationalIdentificationNumber
            elsif divider == '+'
              century = 1800
            else
-             century = 1900
+             preliminary_age = age_for_dob(Date.parse("#{1900 + year}-#{month}-#{day}")) rescue 0
+             #raise preliminary_age.inspect
+             if preliminary_age > 99
+               # It's unlikely that the person is older than 99, so assume a child when no divider was provided.
+               century = 2000
+             else
+               century = 1900
+             end
            end
 
            begin

@@ -41,6 +41,43 @@ describe Swedish, '.generate' do
 
   end
 
+  describe '#age' do
+
+    before do
+      Timecop.freeze Date.parse('2014-01-20')
+    end
+
+    it "knows the age" do
+      expect( Swedish.new("19180123-2669").age ).to eq 95
+      expect( Swedish.new("19180123-2669").age ).to eq 95
+      expect( Swedish.new("00180123-2669").age ).to eq 95
+      expect( Swedish.new("000180123-2669").age ).to eq 95
+      expect( Swedish.new("050126-1853").age ).to eq 8
+      expect( Swedish.new("0asdfghj501261853").age ).to eq 8
+      expect( Swedish.new("050112-2451").age ).to eq 9
+      expect( Swedish.new("450202-6950").age ).to eq 68
+      expect( Swedish.new("19450202-6950").age ).to eq 68
+    end
+
+    it "is nil for invalid numbers" do
+      expect( Swedish.new("991301-1236").age ).to be_nil
+      expect( Swedish.new("830231-5554").age ).to be_nil
+      expect( Swedish.new("050112--2451").age ).to be_nil
+      expect( Swedish.new("123456-1239").age ).to be_nil
+      expect( Swedish.new("180123-2668").age ).to be_nil
+      expect( Swedish.new("150D1261853").age ).to be_nil
+      expect( Swedish.new("750112-2451").age ).to be_nil
+      expect( Swedish.new("123").age ).to be_nil
+      expect( Swedish.new("000000-0000").age ).to be_nil
+      expect( Swedish.new("0000000000").age ).to be_nil
+      expect( Swedish.new("asdfghj").age ).to be_nil
+      expect( Swedish.new("").age ).to be_nil
+      expect( Swedish.new(12345678).age ).to be_nil
+      expect( Swedish.new(:really_bad_input).age ).to be_nil
+    end
+
+  end
+
   describe '#to_s' do
 
     it "repair missing dashes and a superfluous century, even if the number is invalid" do
