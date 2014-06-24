@@ -3,6 +3,8 @@ require 'national_identification_number/base'
 module NationalIdentificationNumber
   class Finnish < Base
 
+    attr_reader :date
+
     CHECKSUMS = %w{ 0 1 2 3 4 5 6 7 8 9 A B C D E F H J K L M N P R S T U V W X Y }
 
     protected
@@ -33,8 +35,9 @@ module NationalIdentificationNumber
           else          1900
           end
 
+
           begin
-            Date.parse("#{century+year}-#{month}-#{day}")
+            @date = Date.parse("#{century+year}-#{month}-#{day}")
             @valid = true
             @number = ("#{$1}#{$2}#{$3}#{divider}#{$5}#{checksum}")
           rescue ArgumentError
