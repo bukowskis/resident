@@ -1,4 +1,4 @@
-= Resident
+# Resident
 
 Validates a National Identification Number (See http://en.wikipedia.org/wiki/National_identification_number).
 There are some 62 countries that have this type of number.
@@ -6,11 +6,11 @@ This gem currently only supports Swedish (Personnummer) and Finnish (Henkilöasi
 
 There is a special focus on identifying these numbers robustly (i.e. you can safely validate a param[:number] directly, or cleanup your database by running every non-normalized value through this gem).
 
-== Installation
+## Installation
 
     gem install resident
 
-== Usage
+## Usage
 
 Really, you can just use <tt>valid?</tt> and <tt>to_s</tt> like so:
 
@@ -27,7 +27,7 @@ An example of robustness:
 
     NationalIdentificationNumber::Swedish.new("19050126-185d3\n").to_s => "050126-1853"
 
-== License
+## License
 
 Some marked parts of the code are inspired or taken from MIT licensed code of
 
