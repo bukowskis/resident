@@ -12,15 +12,16 @@ There is a special focus on identifying these numbers robustly (i.e. you can saf
 
 ## Usage
 
-Really, you can just use <tt>valid?</tt>, <tt>to_s</tt>, and <tt>age</tt> like so:
+Really, you can just use <tt>valid?</tt>, <tt>sanitize</tt>, <tt>to_s</tt>, and <tt>age</tt> like so:
 
     require 'resident'
 
     number = NationalIdentificationNumber::Swedish.new('0501261853')
 
-    number.valid?  #=> true
-    number.to_s    #=> "050126-1853"
-    number.age     #=> 9
+    number.valid?   #=> true
+    number.to_s     #=> "050126-1853"
+    number.sanitize #=> "050126-1853" (Would have been nil if invalid)
+    number.age      #=> 9
 
 Please have a look at the specs to see how the national identification numbers of various countries are handled.
 
