@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.require_paths << 'lib'
 
   s.name        = 'resident'
-  s.version     = '0.0.10'
+  s.version     = '0.0.11'
   s.summary     = 'Validate National Identification Numbers.'
   s.homepage    = "http://github.com/bukowskis/national_identification_number/"
   s.author      = 'Bukowskis'

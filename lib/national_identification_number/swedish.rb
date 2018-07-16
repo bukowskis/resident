@@ -4,7 +4,6 @@ module NationalIdentificationNumber
   # Inspired by https://github.com/c7/personnummer/blob/master/lib/personnummer.rb
   # Copyright (c) 2008 Peter Hellberg MIT
   class Swedish < Base
-
     attr_reader :date # used for testing
 
     # Generator for valid Swedish personnummer: http://en.wikipedia.org/wiki/Personal_identity_number_(Sweden)
@@ -31,7 +30,12 @@ module NationalIdentificationNumber
       if @number.match(/\A(\d{0}|\d{2})(\d{6})(\-{0,1})(\d{4})\Z/)
         @number = "#{$2}-#{$4}"
       else
-        @number.gsub!(/[^\d\-\+]/, '')
+        candidate = @number.gsub(/[^\d\-\+]/, '')
+        if candidate.match(/\A(\d{0}|\d{2})(\d{6})(\-{0,1})(\d{4})\Z/)
+          @number = "#{$2}-#{$4}"
+        else
+          @number = candidate
+        end
       end
     end
 
@@ -98,15 +102,14 @@ module NationalIdentificationNumber
       end
       control_digit
     end
-
   end
 end
 
-if $0 == __FILE__
-  # Randomize every part
-  puts Bukowskis::NationalIdentificationNumber::Swedish.generate
-  # Use given date, randomize serial
-  puts Bukowskis::NationalIdentificationNumber::Swedish.generate(Date.new(1975,1,1))
-  # Use given date and serial, calculate checksum
-  puts Bukowskis::NationalIdentificationNumber::Swedish.generate(Date.new(1975,1,1), 123)
-end
+# if $0 == __FILE__
+#   # Randomize every part
+#   puts Bukowskis::NationalIdentificationNumber::Swedish.generate
+#   # Use given date, randomize serial
+#   puts Bukowskis::NationalIdentificationNumber::Swedish.generate(Date.new(1975,1,1))
+#   # Use given date and serial, calculate checksum
+#   puts Bukowskis::NationalIdentificationNumber::Swedish.generate(Date.new(1975,1,1), 123)
+# end

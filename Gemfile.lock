@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    resident (0.0.10)
+    resident (0.0.11)
 
 GEM
   remote: https://rubygems.org/
@@ -60,3 +60,6 @@ DEPENDENCIES
   resident!
   rspec
   timecop
+
+BUNDLED WITH
+   1.16.2

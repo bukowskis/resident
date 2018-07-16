@@ -5,7 +5,6 @@ include NationalIdentificationNumber
 
 describe Finnish do
   describe '#valid?' do
-
     it "recognizes valid numbers" do
       expect( Finnish.new('311280-999J') ).to be_valid
       expect( Finnish.new('131052-308T') ).to be_valid
@@ -32,7 +31,39 @@ describe Finnish do
       expect( Finnish.new(1234567890) ).to_not be_valid
       expect( Finnish.new(:really_bad_input_value) ).to_not be_valid
     end
+  end
 
+  describe 'sanitize' do
+    context 'valid numbers' do
+      it 'is the formatted number' do
+        expect(Finnish.new('311280-999J').sanitize).to eq '311280-999J'
+        expect(Finnish.new('131052-308T').sanitize).to eq '131052-308T'
+        expect(Finnish.new('290164-862u').sanitize).to eq '290164-862U'
+        expect(Finnish.new('270368A172X').sanitize).to eq '270368A172X'
+        expect(Finnish.new('310145A586a').sanitize).to eq '310145A586A'
+        expect(Finnish.new('080266+183P').sanitize).to eq '080266+183P'
+        expect(Finnish.new('290248+145c').sanitize).to eq '290248+145C'
+      end
+    end
+
+    context 'invalid numbers' do
+      it 'is nil' do
+        expect(Finnish.new('671301A172V').sanitize).to be nil
+        expect(Finnish.new('830231A172M').sanitize).to be nil
+        expect(Finnish.new('311180-999J').sanitize).to be nil
+        expect(Finnish.new('131052-308S').sanitize).to be nil
+        expect(Finnish.new('290164X862U').sanitize).to be nil
+        expect(Finnish.new('670368A172X').sanitize).to be nil
+        expect(Finnish.new('310145--586A').sanitize).to be nil
+        expect(Finnish.new('asdf').sanitize).to be nil
+        expect(Finnish.new('1234567890').sanitize).to be nil
+        expect(Finnish.new('0000000000000').sanitize).to be nil
+        expect(Finnish.new('000000-0000').sanitize).to be nil
+        expect(Finnish.new('').sanitize).to be nil
+        expect(Finnish.new(1234567890).sanitize).to be nil
+        expect(Finnish.new(:really_bad_input_value).sanitize).to be nil
+      end
+    end
   end
 
   describe 'age' do

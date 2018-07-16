@@ -41,6 +41,40 @@ describe Swedish, '.generate' do
 
   end
 
+  describe 'sanitize' do
+    context 'invalid numbers' do
+      it 'is nil' do
+        expect(Swedish.new('991301-1236').sanitize).to be nil # valid checksum, invalid month
+        expect(Swedish.new('830231-5554').sanitize).to be nil # valid checksum, invalid day
+        expect(Swedish.new('050112--2451').sanitize).to be nil
+        expect(Swedish.new('123456-1239').sanitize).to be nil
+        expect(Swedish.new('180123-2668').sanitize).to be nil
+        expect(Swedish.new('150D1261853').sanitize).to be nil
+        expect(Swedish.new('750112-2451').sanitize).to be nil
+        expect(Swedish.new('123').sanitize).to be nil
+        expect(Swedish.new('000000-0000').sanitize).to be nil
+        expect(Swedish.new('0000000000').sanitize).to be nil
+        expect(Swedish.new('asdfghj').sanitize).to be nil
+        expect(Swedish.new('').sanitize).to be nil
+        expect(Swedish.new(12345678).sanitize).to be nil
+        expect(Swedish.new(:really_bad_input).sanitize).to be nil
+      end
+    end
+
+    context 'valid numbers' do
+      it 'is the sanitize dnumber' do
+        expect(Swedish.new('19180123-2669').sanitize).to eq '180123-2669'
+        expect(Swedish.new('00180123-2669').sanitize).to eq '180123-2669'
+        expect(Swedish.new('000180123-2669').sanitize).to eq '180123-2669'
+        expect(Swedish.new('050126-1853').sanitize).to eq '050126-1853'
+        expect(Swedish.new('0asdfghj501261853').sanitize).to eq '050126-1853'
+        expect(Swedish.new('050112-2451').sanitize).to eq '050112-2451'
+        expect(Swedish.new('450202-6950').sanitize).to eq '450202-6950'
+        expect(Swedish.new('19450202-6950').sanitize).to eq '450202-6950'
+      end
+    end
+  end
+
   describe '#age' do
 
     before do
@@ -90,6 +124,7 @@ describe Swedish, '.generate' do
     it "return the number normalized if the number is valid" do
       expect( Swedish.new('0501261853').to_s ).to eq '050126-1853'
       expect( Swedish.new('050126-1853').to_s ).to eq '050126-1853'
+      expect( Swedish.new('0asdfghj501261853').to_s).to eq '050126-1853'
       expect( Swedish.new("190501261853").to_s ).to eq '050126-1853'
       expect( Swedish.new("19050126-1853").to_s ).to eq '050126-1853'
       expect( Swedish.new("19050126-185d3").to_s ).to eq '050126-1853'

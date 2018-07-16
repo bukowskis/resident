@@ -17,6 +17,10 @@ module NationalIdentificationNumber
       @number
     end
 
+    def sanitize
+      to_s if valid?
+    end
+
     def age
       age_for_dob date
     end
