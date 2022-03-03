@@ -2,9 +2,13 @@
 
 Validates a National Identification Number (See http://en.wikipedia.org/wiki/National_identification_number).
 There are some 62 countries that have this type of number.
-This gem currently only supports Swedish (Personnummer) and Finnish (Henkilöasiakkaat) ones.
 
-There is a special focus on identifying these numbers robustly (i.e. you can safely validate a param[:number] directly, or cleanup your database by running every non-normalized value through this gem).
+This gem currently only supports Swedish (Personnummer), Finnish
+(Henkilöasiakkaat), Norwegian (Fødelsenummer) and Danish (CPR).
+
+There is a special focus on identifying these numbers robustly
+(i.e. you can safely validate a param[:number] directly, or cleanup
+your database by running every non-normalized value through this gem).
 
 ## Installation
 
@@ -38,7 +42,7 @@ Some marked parts of the code are inspired or taken from MIT licensed code of
 
 Other than that you got:
 
-Copyright (c) 2011-2014 Bukowskis.
+Copyright (c) 2011-2022 Bukowskis.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

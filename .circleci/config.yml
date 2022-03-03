@@ -1,0 +1,18 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.6-node-browsers
+    environment:
+      - RACK_ENV: test
+    steps:
+      - checkout
+
+      - run:
+          name: Bundle Install
+          command: bundle install --path=vendor/bundle --jobs=4 --retry=3
+
+      - run:
+          name: Run specs
+          command: bundle exec rspec  --format progress

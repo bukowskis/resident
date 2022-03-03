@@ -41,6 +41,5 @@ module NationalIdentificationNumber
     def validate
       raise 'You need to implement at least this method in subclasses.'
     end
-
   end
 end
