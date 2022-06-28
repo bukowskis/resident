@@ -25,6 +25,10 @@ module NationalIdentificationNumber
       age_for_dob date
     end
 
+    def ==(other)
+      other.class == self.class && other&.to_s == to_s
+    end
+
     protected
 
     # stackoverflow.com/questions/819263
