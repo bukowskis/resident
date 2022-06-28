@@ -74,4 +74,23 @@ describe NationalIdentificationNumber::Base do
     end
   end
 
+  describe '#==' do
+    it 'should be true if same class and string representation' do
+      one = NationalIdentificationNumber::Swedish.new('040626-5488')
+      other = NationalIdentificationNumber::Swedish.new('20040626-5488')
+      expect(one == other).to be true
+    end
+
+    it 'should be false if other string representation' do
+      one = NationalIdentificationNumber::Swedish.new('040626-5488')
+      other = NationalIdentificationNumber::Swedish.new('040626-8128')
+      expect(one == other).to be false
+    end
+
+    it 'should be false if other class' do
+      one = NationalIdentificationNumber::Swedish.new('040626-5488')
+      other = NationalIdentificationNumber::Finnish.new('040626-5488')
+      expect(one == other).to be false
+    end
+  end
 end
