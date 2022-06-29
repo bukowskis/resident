@@ -10,14 +10,14 @@ module NationalIdentificationNumber
       super
       @number.gsub!(/[^0-9]/, '')
       if (matches = @number.match(/\A(?<birthday>[0-9]{6})(?<checksum>[0-9]{4})\z/))
-        birthday, checksum = matches.values_at(:birthday, :checksum)
+        birthday, checksum = %w[birthday checksum].map { |group| matches[group] }
         @number = "#{birthday}-#{checksum}"
       end
     end
 
     def validate
       if (matches = @number.match(/\A(?<day>\d{2})(?<month>\d{2})(?<year>\d{2})-(?<serial>\d{3})(?<checksum>\d{1})\z/))
-        day, month, year, serial, checksum = matches.values_at(:day, :month, :year, :serial, :checksum)
+        day, month, year, serial, checksum = %i[day month year serial checksum].map { |group| matches[group] }
         begin
           @date = Date.parse("#{full_year(serial, year)}-#{month}-#{day}")
           @valid = true

@@ -13,7 +13,8 @@ module NationalIdentificationNumber
 
     def validate
       if (matches = @number.match(/\A(?<day>\d{2})(?<month>\d{2})(?<year>\d{2})(?<serial>\d{3})(?<checksum>\d{2})\z/))
-        day, month, year, serial, checksum = matches.values_at(:day, :month, :year, :serial, :checksum)
+        day, month, year, serial, checksum = %i[day month year serial checksum].map { |group| matches[group] }
+
         sans_checksum = "#{day}#{month}#{year}#{serial}"
 
         if checksum == calculate_checksum(sans_checksum)
@@ -53,7 +54,7 @@ module NationalIdentificationNumber
     def weighted_modulo_11(digits_and_weights)
       result = 11 - (digits_and_weights.map do |terms|
                        terms.reduce(:*)
-                     end.sum % 11)
+                     end.reduce(:+) % 11)
       result > 9 ? 0 : result
     end
   end

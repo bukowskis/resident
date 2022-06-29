@@ -1,18 +1,30 @@
-version: 2
+version: 2.1
 
 jobs:
   build:
+    parameters:
+      ruby_version:
+        type: string
     docker:
-      - image: circleci/ruby:2.6-node-browsers
+      - image: circleci/ruby:<< parameters.ruby_version >>-node-browsers
     environment:
       - RACK_ENV: test
     steps:
       - checkout
-
+      - run:
+          name: Ruby Version
+          command: ruby --version
       - run:
           name: Bundle Install
           command: bundle install --path=vendor/bundle --jobs=4 --retry=3
-
       - run:
           name: Run specs
           command: bundle exec rspec  --format progress
+
+workflows:
+  multiple-ruby-test:
+    jobs:
+      - build:
+          matrix:
+            parameters:
+              ruby_version: ["2.3", "2.6"]
