@@ -54,7 +54,7 @@ module NationalIdentificationNumber
     def weighted_modulo_11(digits_and_weights)
       result = 11 - (digits_and_weights.map do |terms|
                        terms.reduce(:*)
-                     end.sum % 11)
+                     end.reduce(:+) % 11)
       result > 9 ? 0 : result
     end
   end
