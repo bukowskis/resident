@@ -62,7 +62,7 @@ describe Swedish, '.generate' do
     end
 
     context 'valid numbers' do
-      it 'is the sanitize dnumber' do
+      it 'is the sanitize number' do
         expect(Swedish.new('19180123-2669').sanitize).to eq '180123-2669'
         expect(Swedish.new('00180123-2669').sanitize).to eq '180123-2669'
         expect(Swedish.new('000180123-2669').sanitize).to eq '180123-2669'
@@ -71,6 +71,11 @@ describe Swedish, '.generate' do
         expect(Swedish.new('050112-2451').sanitize).to eq '050112-2451'
         expect(Swedish.new('450202-6950').sanitize).to eq '450202-6950'
         expect(Swedish.new('19450202-6950').sanitize).to eq '450202-6950'
+      end
+
+      it 'adds - or + depending on century for twelve digit formats' do
+        expect(Swedish.new('202401275181').sanitize).to eq "240127-5181"
+        expect(Swedish.new('192401275181').sanitize).to eq "240127+5181"
       end
     end
   end
@@ -125,7 +130,7 @@ describe Swedish, '.generate' do
       expect( Swedish.new('0501261853').to_s ).to eq '050126-1853'
       expect( Swedish.new('050126-1853').to_s ).to eq '050126-1853'
       expect( Swedish.new('0asdfghj501261853').to_s).to eq '050126-1853'
-      expect( Swedish.new("190501261853").to_s ).to eq '050126-1853'
+      expect( Swedish.new("190501261853").to_s ).to eq '050126+1853'
       expect( Swedish.new("19050126-1853").to_s ).to eq '050126-1853'
       expect( Swedish.new("19050126-185d3").to_s ).to eq '050126-1853'
       expect( Swedish.new("19050126-185d3\n").to_s ).to eq '050126-1853'
