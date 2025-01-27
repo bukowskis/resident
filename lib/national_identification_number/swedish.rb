@@ -25,8 +25,22 @@ module NationalIdentificationNumber
 
     protected
 
+    def parse_twelve_digits
+      return unless @number.match(/\A(\d{4})(\d{2})(\d{2})(\d{4})\Z/)
+      year = $1
+      month = $2
+      day = $3
+      born = Date.new(year.to_i, month.to_i, day.to_i)
+      sep = born < Date.today.prev_year(100) ? '+' : '-'
+      @number = "#{year[2..]}#{month}#{day}#{sep}#{$4}"
+    rescue Date::Error
+      nil
+    end
+
     def repair
       super
+      return if parse_twelve_digits
+
       if @number.match(/\A(\d{0}|\d{2})(\d{6})(\-{0,1})(\d{4})\Z/)
         @number = "#{$2}-#{$4}"
       else
@@ -47,7 +61,7 @@ module NationalIdentificationNumber
            year    = $1.to_i
            month   = $2.to_i
            day     = $3.to_i
-           divider ||= $4 ||'-'
+           divider = $4 || '-'
            serial  = $5.to_i
 
            today = Date.today
@@ -59,7 +73,6 @@ module NationalIdentificationNumber
              century = 1800
            else
              preliminary_age = age_for_dob(Date.parse("#{1900 + year}-#{month}-#{day}")) rescue 0
-             #raise preliminary_age.inspect
              if preliminary_age > 99
                # It's unlikely that the person is older than 99, so assume a child when no divider was provided.
                century = 2000
