@@ -32,7 +32,7 @@ module NationalIdentificationNumber
       day = $3
       born = Date.new(year.to_i, month.to_i, day.to_i)
       sep = born < Date.today.prev_year(100) ? '+' : '-'
-      @number = "#{year[2..]}#{month}#{day}#{sep}#{$4}"
+      @number = "#{year[2..-1]}#{month}#{day}#{sep}#{$4}"
     rescue Date::Error
       nil
     end
