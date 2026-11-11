@@ -61,7 +61,7 @@ describe NationalIdentificationNumber::Norwegian do
     it 'recognizes valid numbers' do
       expect(described_class.new('11077941012').age).to eq 42
       expect(described_class.new('01010010000').age).to eq 122
-      expect(described_class.new('11077950020').age).to be_nil # Birthday in the future
+      expect(described_class.new('11077950020').age).to eq 142
       expect(described_class.new('03032050068').age).to eq 2
       expect(described_class.new('11095231138').age).to eq 69
       expect(described_class.new('21116422341').age).to eq 57
@@ -82,6 +82,26 @@ describe NationalIdentificationNumber::Norwegian do
       expect(described_class.new('').age).to be_nil
       expect(described_class.new(1234567890).age).to be_nil
       expect(described_class.new(:really_bad_input_value).age).to be_nil
+    end
+  end
+
+  describe '#date' do
+    it 'reads the century from the individual number' do
+      expect(described_class.new('15010000995').date).to eq Date.new(1900, 1, 15)
+      expect(described_class.new('15016549999').date).to eq Date.new(1965, 1, 15)
+      expect(described_class.new('15015474960').date).to eq Date.new(1854, 1, 15)
+      expect(described_class.new('15019950910').date).to eq Date.new(1899, 1, 15)
+      expect(described_class.new('15014099961').date).to eq Date.new(1940, 1, 15)
+      expect(described_class.new('15016595052').date).to eq Date.new(1965, 1, 15)
+      expect(described_class.new('15019990971').date).to eq Date.new(1999, 1, 15)
+      expect(described_class.new('15010099959').date).to eq Date.new(2000, 1, 15)
+      expect(described_class.new('15013950951').date).to eq Date.new(2039, 1, 15)
+    end
+
+    it 'is invalid when the individual number is never issued for that year' do
+      expect(described_class.new('15016589869')).not_to be_valid
+      expect(described_class.new('15016575965')).not_to be_valid
+      expect(described_class.new('15015374869')).not_to be_valid
     end
   end
 

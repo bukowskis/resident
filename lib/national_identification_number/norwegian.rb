@@ -17,9 +17,11 @@ module NationalIdentificationNumber
 
         sans_checksum = "#{day}#{month}#{year}#{serial}"
 
-        if checksum == calculate_checksum(sans_checksum)
+        birth_century = century(serial.to_i, year.to_i)
+
+        if birth_century && checksum == calculate_checksum(sans_checksum)
           begin
-            @date = Date.parse("#{full_year(serial, year)}-#{month}-#{day}")
+            @date = Date.parse("#{birth_century + year.to_i}-#{month}-#{day}")
             @valid = true
             @number = "#{sans_checksum}#{checksum}"
           rescue ArgumentError
@@ -30,15 +32,13 @@ module NationalIdentificationNumber
 
     private
 
-    def full_year(serial, year)
-      century(serial) + year.to_i
-    end
-
-    def century(serial)
-      case serial.to_i
-      when 0..499 then 1900
-      else 2000 # or 1800, not possible to tell.
-      end
+    # Folkeregisterforskriften § 2-2-1
+    def century(serial, year)
+      return 1900 if serial < 500
+      return 2000 if year < 40
+      return 1900 if serial >= 900
+      return 1800 if serial < 750 && year >= 54
+      nil
     end
 
     def calculate_checksum(number)
